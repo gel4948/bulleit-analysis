@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Whiskey Tasting Event Analysis</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 20px; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        h1, h2 { color: #333; }
+        table { border-collapse: collapse; width: 100%; margin-bottom: 20px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        .chart-container { width: 100%; max-width: 600px; margin-bottom: 30px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Whiskey Tasting Event Analysis</h1>
+        
+        <h2>1. Frequency of Visits</h2>
+        <table id="frequency-table">
+            <tr>
+                <th>Period</th>
+                <th>Average Visits per Week</th>
+            </tr>
+            <tr>
+                <td>Before Event</td>
+                <td>2.89</td>
+            </tr>
+            <tr>
+                <td>After Event</td>
+                <td>3.15</td>
+            </tr>
+        </table>
+        <div class="chart-container">
+            <canvas id="frequency-chart"></canvas>
+        </div>
+
+        <h2>2. Average CI, Theo, and Actual by Day of Week</h2>
+        <h3>Before the Event</h3>
+        <table id="before-event-table">
+            <tr>
+                <th>Day</th>
+                <th>CI</th>
+                <th>Theo</th>
+                <th>Actual</th>
+            </tr>
+            <tr>
+                <td>Monday</td>
+                <td>3496.29</td>
+                <td>318.54</td>
+                <td>258.44</td>
+            </tr>
+            <tr>
+                <td>Tuesday</td>
+                <td>2912.20</td>
+                <td>258.51</td>
+                <td>515.80</td>
+            </tr>
+            <tr>
+                <td>Wednesday</td>
+                <td>2321.90</td>
+                <td>217.49</td>
+                <td>478.20</td>
+            </tr>
+            <tr>
+                <td>Thursday</td>
+                <td>3645.20</td>
+                <td>320.36</td>
+                <td>190.30</td>
+            </tr>
+            <tr>
+                <td>Friday</td>
+                <td>3445.86</td>
+                <td>277.30</td>
+                <td>-85.55</td>
+            </tr>
+            <tr>
+                <td>Saturday</td>
+                <td>3206.69</td>
+                <td>288.81</td>
+                <td>262.24</td>
+            </tr>
+            <tr>
+                <td>Sunday</td>
+                <td>2604.90</td>
+                <td>236.22</td>
+                <td>453.95</td>
+            </tr>
+        </table>
+
+        <h3>After the Event</h3>
+        <table id="after-event-table">
+            <tr>
+                <th>Day</th>
+                <th>CI</th>
+                <th>Theo</th>
+                <th>Actual</th>
+            </tr>
+            <tr>
+                <td>Monday</td>
+                <td>4140.28</td>
+                <td>373.20</td>
+                <td>300.97</td>
+            </tr>
+            <tr>
+                <td>Tuesday</td>
+                <td>3910.90</td>
+                <td>350.43</td>
+                <td>524.49</td>
+            </tr>
+            <tr>
+                <td>Wednesday</td>
+                <td>3750.34</td>
+                <td>344.87</td>
+                <td>860.29</td>
+            </tr>
+            <tr>
+                <td>Thursday</td>
+                <td>2749.69</td>
+                <td>252.93</td>
+                <td>446.30</td>
+            </tr>
+            <tr>
+                <td>Friday</td>
+                <td>4019.30</td>
+                <td>351.24</td>
+                <td>644.71</td>
+            </tr>
+            <tr>
+                <td>Saturday</td>
+                <td>3531.10</td>
+                <td>326.53</td>
+                <td>502.30</td>
+            </tr>
+            <tr>
+                <td>Sunday</td>
+                <td>2001.30</td>
+                <td>182.39</td>
+                <td>318.95</td>
+            </tr>
+        </table>
+
+        <div class="chart-container">
+            <canvas id="ci-chart"></canvas>
+        </div>
+        <div class="chart-container">
+            <canvas id="theo-chart"></canvas>
+        </div>
+        <div class="chart-container">
+            <canvas id="actual-chart"></canvas>
+        </div>
+
+        <h2>3. Key Observations</h2>
+        <ul>
+            <li>The average number of visits per week increased from 2.89 to 3.15 after the event.</li>
+            <li>Average CI increased for most days of the week, with significant increases on Mondays, Tuesdays, and Wednesdays.</li>
+            <li>Both Theo and Actual win increased for most days, indicating improved casino performance.</li>
+            <li>Wednesday showed the most notable improvement, with Actual win nearly doubling from $478.20 to $860.29.</li>
+            <li>Almost all metrics show improvement, suggesting a positive impact of the event on player engagement and casino performance.</li>
+        </ul>
+    </div>
+
+    <script>
+        // Create charts
+        function createChart(elementId, label, beforeData, afterData) {
+            const ctx = document.getElementById(elementId).getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+                    datasets: [
+                        {
+                            label: 'Before Event',
+                            data: beforeData,
+                            backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                        },
+                        {
+                            label: 'After Event',
+                            data: afterData,
+                            backgroundColor: 'rgba(153, 102, 255, 0.6)',
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    },
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: label
+                        }
+                    }
+                }
+            });
+        }
+
+        // Frequency chart
+        new Chart(document.getElementById('frequency-chart').getContext('2d'), {
+            type: 'bar',
+            data: {
+                labels: ['Before Event', 'After Event'],
+                datasets: [{
+                    label: 'Average Visits per Week',
+                    data: [2.89, 3.15],
+                    backgroundColor: ['rgba(75, 192, 192, 0.6)', 'rgba(153, 102, 255, 0.6)'],
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                },
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Frequency of Visits'
+                    }
+                }
+            }
+        });
+
+        // CI, Theo, and Actual charts
+        createChart('ci-chart', 'Average CI by Day of Week', 
+            [3496.29, 2912.20, 2321.90, 3645.20, 3445.86, 3206.69, 2604.90],
+            [4140.28, 3910.90, 3750.34, 2749.69, 4019.30, 3531.10, 2001.30]
+        );
+        createChart('theo-chart', 'Average Theo by Day of Week',
+            [318.54, 258.51, 217.49, 320.36, 277.30, 288.81, 236.22],
+            [373.20, 350.43, 344.87, 252.93, 351.24, 326.53, 182.39]
+        );
+        createChart('actual-chart', 'Average Actual by Day of Week',
+            [258.44, 515.80, 478.20, 190.30, -85.55, 262.24, 453.95],
+            [300.97, 524.49, 860.29, 446.30, 644.71, 502.30, 318.95]
+        );
+    </script>
+</body>
+</html>
